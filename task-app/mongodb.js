@@ -15,11 +15,27 @@ async function main() {
   console.log('Connected successfully to server');
   const db = client.db(dbName);
 
-  const taskOne = await db.collection('tasks').findOne({ _id: new ObjectId("65f2f7a81b762159756d454e")})
-  console.log(taskOne)
+//   const taskOne = await db.collection('tasks').findOne({ _id: new ObjectId("65f2f7a81b762159756d454e")})
+//   console.log(taskOne)
 
   const taskAll = await db.collection('tasks').find({ completed: false}).toArray()
   console.log(taskAll)
+
+  await db.collection('tasks').updateOne({
+    _id: new ObjectId("65f2f7a81b762159756d454e")
+  }, {
+    $set: {
+        description: 'Updating Test'
+    }
+  }) 
+
+  await db.collection('tasks').updateMany({
+    completed: false
+  }, {
+    $set: {
+        completed: true
+    }
+  }) 
 
     
   return 'done.';
