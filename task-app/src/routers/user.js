@@ -1,5 +1,6 @@
 const express = require('express')
 const User = require('../models/user')
+const auth = require('../middleware/auth')
 const router = new express.Router()
 
 router.post('/users', async (req, res) => {
@@ -19,12 +20,8 @@ router.post('/users', async (req, res) => {
     // })
 })
 
-router.get('/users', (req,res) => {
-    User.find({}).then((users) => {
-        res.send(users)
-    }).catch((e) => {
-        res.status(500).send()
-    })
+router.get('/users/me',auth, async(req,res) => {
+    res.send(req.user)
 })
 
 router.post('/users/login', async (req, res) => {
